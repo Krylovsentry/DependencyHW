@@ -1,0 +1,70 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd">
+
+
+    <bean id="locator" class="pointsix.Locator">
+    </bean>
+
+    <bean id="helicopter"
+    factory-bean="locator"
+    factory-method="createHelicopter">
+        <property name="mark">
+            <value>Robinson R44</value>
+        </property>
+        <property name="crew">
+            <list>
+                <value>John</value>
+                <value>Walter</value>
+                <value>Christian</value>
+            </list>
+        </property>
+    </bean>
+
+
+
+
+
+    <bean id="electrichelicopter" class="pointthree.ElectricHelicopter">
+
+        <constructor-arg type="java.lang.String" value="ERobinson"></constructor-arg>
+
+        <property name="crew">
+            <list>
+                <value>Andy</value>
+                <value>Nathan</value>
+                <value>Josh</value>
+            </list>
+        </property>
+
+    </bean>
+
+
+    <bean id="hellicopetbellconfig" class="Config.HelicopterBellConfig">
+
+        <constructor-arg name="mark" type="java.lang.String" value="Bell 400"></constructor-arg>
+        <constructor-arg name="crewList">
+            <list>
+            <value>George</value>
+            <value>Sam</value>
+            <value>Peter</value>
+            </list>
+        </constructor-arg>
+
+    </bean>
+
+    <bean id="hellicopterbell" class="Config.HelicopterBell">
+
+        <property name="mark" value="#{hellicopetbellconfig.mark}"></property>
+        <property name="crew" value="#{hellicopetbellconfig.crewList}"></property>
+
+    </bean>
+
+
+    <bean id="command" scope="prototype" class="lookup.Command"></bean>
+    <bean id="expediter" class="lookup.Expediter">
+        <lookup-method name="createCommand" bean="command"></lookup-method>
+    </bean>
+
+</beans>
